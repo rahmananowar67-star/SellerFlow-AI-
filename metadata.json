@@ -1,0 +1,8 @@
+{
+  "name": "SellerFlow AI",
+  "description": "Multi-portal AI commerce operating system uniting storefronts, customer shopping, seller AI studios, and platform administration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,569 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user account and profile details across customer, seller, and admin roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "role": { "type": "string", "enum": ["customer", "seller", "admin"] },
+        "phone": { "type": "string", "maxLength": 40 },
+        "shippingAddress": { "type": "string", "maxLength": 300 },
+        "city": { "type": "string", "maxLength": 80 },
+        "state": { "type": "string", "maxLength": 80 },
+        "pinCode": { "type": "string", "maxLength": 12 },
+        "avatarUrl": { "type": "string", "maxLength": 500 },
+        "preferredLanguage": { "type": "string", "enum": ["en", "hi", "as"] },
+        "preferredCurrency": { "type": "string", "enum": ["INR", "USD", "EUR"] },
+        "status": { "type": "string", "enum": ["active", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "role", "status", "createdAt", "updatedAt"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Trusted administrator grant record.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "SellerAccount": {
+      "title": "SellerAccount",
+      "description": "Indian merchant business onboarding, KYC/GSTIN, subscription plan, and payout configuration.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fullName": { "type": "string", "maxLength": 120 },
+        "businessName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "mobile": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 300 },
+        "city": { "type": "string", "maxLength": 80 },
+        "state": { "type": "string", "maxLength": 80 },
+        "pinCode": { "type": "string", "maxLength": 12 },
+        "businessCategory": { "type": "string", "maxLength": 80 },
+        "gstin": { "type": "string", "maxLength": 20 },
+        "panNumber": { "type": "string", "maxLength": 20 },
+        "plan": { "type": "string", "enum": ["starter", "growth", "pro", "enterprise"] },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected", "suspended"] },
+        "rejectionReason": { "type": "string", "maxLength": 300 },
+        "payoutAccount": { "type": "string", "maxLength": 120 },
+        "upiId": { "type": "string", "maxLength": 100 },
+        "bankAccountName": { "type": "string", "maxLength": 120 },
+        "bankAccountNumber": { "type": "string", "maxLength": 40 },
+        "ifscCode": { "type": "string", "maxLength": 20 },
+        "commissionRate": { "type": "number" },
+        "totalRevenueCents": { "type": "integer" },
+        "isSample": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "businessName", "email", "plan", "status", "commissionRate", "totalRevenueCents", "createdAt", "updatedAt"]
+    },
+    "Store": {
+      "title": "Store",
+      "description": "Public storefront configuration created by a seller.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "slug": { "type": "string", "minLength": 2, "maxLength": 100, "pattern": "^[a-z0-9\\-]+$" },
+        "category": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "tagline": { "type": "string", "maxLength": 180 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "accentColor": { "type": "string", "maxLength": 20 },
+        "layoutStyle": { "type": "string", "enum": ["editorial", "minimal", "grid"] },
+        "location": { "type": "string", "maxLength": 80 },
+        "address": { "type": "string", "maxLength": 300 },
+        "city": { "type": "string", "maxLength": 80 },
+        "state": { "type": "string", "maxLength": 80 },
+        "pinCode": { "type": "string", "maxLength": 12 },
+        "contactEmail": { "type": "string", "maxLength": 200 },
+        "contactPhone": { "type": "string", "maxLength": 30 },
+        "returnPolicy": { "type": "string", "maxLength": 600 },
+        "shippingPolicy": { "type": "string", "maxLength": 600 },
+        "gstin": { "type": "string", "maxLength": 20 },
+        "logoDataUrl": { "type": "string", "maxLength": 350000 },
+        "bannerDataUrl": { "type": "string", "maxLength": 350000 },
+        "status": { "type": "string", "enum": ["pending", "active", "draft", "suspended"] },
+        "rating": { "type": "number" },
+        "productCount": { "type": "integer" },
+        "isSample": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "name", "slug", "category", "tagline", "description", "accentColor", "layoutStyle", "location", "status", "rating", "productCount", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Sellable catalog item with INR pricing, variants, logistics specs, moderation status, and multi-image assets.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "sku": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "category": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "subcategory": { "type": "string", "maxLength": 60 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "bulletPoints": { "type": "array" },
+        "seoKeywords": { "type": "array" },
+        "tags": { "type": "array" },
+        "priceCents": { "type": "integer" },
+        "originalPriceCents": { "type": "integer" },
+        "discountPct": { "type": "number" },
+        "currency": { "type": "string", "enum": ["INR", "USD", "EUR"] },
+        "shippingFeeCents": { "type": "integer" },
+        "gstRatePct": { "type": "number" },
+        "costCents": { "type": "integer" },
+        "stock": { "type": "integer" },
+        "reorderPoint": { "type": "integer" },
+        "published": { "type": "boolean" },
+        "moderationStatus": { "type": "string", "enum": ["draft", "pending", "published", "rejected"] },
+        "rejectionReason": { "type": "string", "maxLength": 300 },
+        "sizes": { "type": "array" },
+        "colors": { "type": "array" },
+        "weightGrams": { "type": "integer" },
+        "dimensions": { "type": "string", "maxLength": 80 },
+        "shippingInfo": { "type": "string", "maxLength": 300 },
+        "returnPolicy": { "type": "string", "maxLength": 400 },
+        "visualVariant": { "type": "string", "maxLength": 40 },
+        "imageDataUrl": { "type": "string", "maxLength": 350000 },
+        "imageAssetIds": { "type": "array" },
+        "isSample": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "storeId", "storeName", "sellerId", "title", "sku", "category", "description", "priceCents", "costCents", "stock", "reorderPoint", "published", "visualVariant", "createdAt", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order with Indian delivery, GST invoice, Razorpay/COD, and Shiprocket/courier tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "customerEmail": { "type": "string", "format": "email", "maxLength": 200 },
+        "customerMobile": { "type": "string", "maxLength": 20 },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "items": { "type": "array" },
+        "subtotalCents": { "type": "integer" },
+        "shippingCents": { "type": "integer" },
+        "taxCents": { "type": "integer" },
+        "gstRatePct": { "type": "number" },
+        "discountCents": { "type": "integer" },
+        "couponCode": { "type": "string", "maxLength": 32 },
+        "totalCents": { "type": "integer" },
+        "currency": { "type": "string", "enum": ["INR", "USD", "EUR"] },
+        "displayCurrency": { "type": "string", "enum": ["INR", "USD", "EUR"] },
+        "fxRateApplied": { "type": "number" },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "paymentStatus": { "type": "string", "enum": ["paid", "pending", "refunded", "failed"] },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "processing", "shipped", "out_for_delivery", "delivered", "cancelled", "returned", "placed", "packed"] },
+        "trackingCode": { "type": "string", "maxLength": 80 },
+        "courierName": { "type": "string", "maxLength": 80 },
+        "awbCode": { "type": "string", "maxLength": 80 },
+        "shiprocketOrderId": { "type": "string", "maxLength": 80 },
+        "shipmentStatus": { "type": "string", "maxLength": 80 },
+        "invoiceNumber": { "type": "string", "maxLength": 60 },
+        "razorpayOrderId": { "type": "string", "maxLength": 80 },
+        "razorpayPaymentId": { "type": "string", "maxLength": 80 },
+        "shippingAddress": { "type": "string", "minLength": 4, "maxLength": 300 },
+        "city": { "type": "string", "maxLength": 80 },
+        "state": { "type": "string", "maxLength": 80 },
+        "pinCode": { "type": "string", "maxLength": 12 },
+        "notes": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerId", "customerName", "customerEmail", "sellerId", "storeId", "storeName", "items", "subtotalCents", "shippingCents", "taxCents", "totalCents", "paymentMethod", "paymentStatus", "status", "trackingCode", "shippingAddress", "createdAt", "updatedAt"]
+    },
+    "CustomerCRM": {
+      "title": "CustomerCRM",
+      "description": "Seller-scoped customer relationship record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerUid": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "segment": { "type": "string", "enum": ["vip", "repeat", "new", "at_risk"] },
+        "totalOrders": { "type": "integer" },
+        "lifetimeSpendCents": { "type": "integer" },
+        "notes": { "type": "string", "maxLength": 800 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "sellerId", "name", "email", "segment", "totalOrders", "lifetimeSpendCents", "createdAt", "updatedAt"]
+    },
+    "PaymentRecord": {
+      "title": "PaymentRecord",
+      "description": "Payment gateway transaction and seller settlement ledger entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "amountCents": { "type": "integer" },
+        "platformFeeCents": { "type": "integer" },
+        "netPayoutCents": { "type": "integer" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "method": { "type": "string", "maxLength": 60 },
+        "status": { "type": "string", "enum": ["captured", "settled", "pending", "refunded", "failed"] },
+        "gatewayRef": { "type": "string", "maxLength": 120 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderId", "customerId", "sellerId", "storeId", "amountCents", "platformFeeCents", "netPayoutCents", "currency", "method", "status", "gatewayRef", "createdAt", "updatedAt"]
+    },
+    "SubscriptionRecord": {
+      "title": "SubscriptionRecord",
+      "description": "Seller SaaS subscription billing record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerName": { "type": "string", "maxLength": 120 },
+        "planId": { "type": "string", "enum": ["starter", "growth", "pro", "enterprise"] },
+        "monthlyPriceCents": { "type": "integer" },
+        "status": { "type": "string", "enum": ["active", "past_due", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "sellerId", "sellerName", "planId", "monthlyPriceCents", "status", "createdAt", "updatedAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "User-scoped system and commerce notifications.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "message": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "category": { "type": "string", "enum": ["order", "inventory", "payment", "system"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "message", "category", "read", "createdAt"]
+    },
+    "AssetFile": {
+      "title": "AssetFile",
+      "description": "Stored media asset metadata and compressed payload.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "mimeType": { "type": "string", "maxLength": 60 },
+        "sizeBytes": { "type": "integer" },
+        "dataUrl": { "type": "string", "maxLength": 350000 },
+        "isPublic": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerId", "name", "mimeType", "sizeBytes", "dataUrl", "isPublic", "createdAt"]
+    },
+    "CategoryRecord": {
+      "title": "CategoryRecord",
+      "description": "Marketplace categories, subcategories, and GST rates managed by admin.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "slug": { "type": "string", "minLength": 2, "maxLength": 80, "pattern": "^[a-z0-9\\-]+$" },
+        "subcategories": { "type": "array" },
+        "gstRatePct": { "type": "number" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "slug", "subcategories", "gstRatePct", "active", "createdAt", "updatedAt"]
+    },
+    "ReviewRecord": {
+      "title": "ReviewRecord",
+      "description": "Customer product review and rating.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "rating": { "type": "integer" },
+        "title": { "type": "string", "maxLength": 120 },
+        "comment": { "type": "string", "minLength": 2, "maxLength": 1000 },
+        "verifiedPurchase": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "productId", "storeId", "sellerId", "customerId", "customerName", "rating", "title", "comment", "verifiedPurchase", "createdAt", "updatedAt"]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "Customer saved wishlist item.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "priceCents": { "type": "integer" },
+        "imageDataUrl": { "type": "string", "maxLength": 350000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerId", "productId", "storeId", "title", "priceCents", "createdAt"]
+    },
+    "CommissionRecord": {
+      "title": "CommissionRecord",
+      "description": "Platform commission calculation per order.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "paymentId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "grossAmountCents": { "type": "integer" },
+        "commissionRate": { "type": "number" },
+        "commissionCents": { "type": "integer" },
+        "netSellerCents": { "type": "integer" },
+        "status": { "type": "string", "enum": ["pending", "earned", "settled", "reversed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderId", "paymentId", "sellerId", "storeId", "storeName", "grossAmountCents", "commissionRate", "commissionCents", "netSellerCents", "status", "createdAt", "updatedAt"]
+    },
+    "PayoutRecord": {
+      "title": "PayoutRecord",
+      "description": "Seller payout request and settlement tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "amountCents": { "type": "integer" },
+        "method": { "type": "string", "maxLength": 60 },
+        "payoutAccount": { "type": "string", "minLength": 2, "maxLength": 140 },
+        "bankRef": { "type": "string", "maxLength": 120 },
+        "status": { "type": "string", "enum": ["requested", "processing", "paid", "rejected"] },
+        "notes": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "sellerId", "storeName", "amountCents", "method", "payoutAccount", "status", "createdAt", "updatedAt"]
+    },
+    "RefundRecord": {
+      "title": "RefundRecord",
+      "description": "Customer order refund request and admin settlement status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "paymentId": { "type": "string", "maxLength": 128 },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "amountCents": { "type": "integer" },
+        "reason": { "type": "string", "minLength": 3, "maxLength": 400 },
+        "status": { "type": "string", "enum": ["requested", "approved", "processed", "rejected"] },
+        "adminNotes": { "type": "string", "maxLength": 400 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderId", "customerId", "customerName", "sellerId", "storeId", "amountCents", "reason", "status", "createdAt", "updatedAt"]
+    },
+    "DisputeRecord": {
+      "title": "DisputeRecord",
+      "description": "Marketplace order dispute escalation and resolution record.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "sellerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "subject": { "type": "string", "minLength": 3, "maxLength": 140 },
+        "description": { "type": "string", "minLength": 5, "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["open", "under_review", "resolved", "closed"] },
+        "resolution": { "type": "string", "maxLength": 600 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderId", "customerId", "customerName", "sellerId", "storeName", "subject", "description", "status", "createdAt", "updatedAt"]
+    },
+    "PlatformSettings": {
+      "title": "PlatformSettings",
+      "description": "Global marketplace governance, GST, shipping, and subscription plan pricing rules.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "requireProductApproval": { "type": "boolean" },
+        "requireSellerApproval": { "type": "boolean" },
+        "defaultGstPct": { "type": "number" },
+        "freeShippingThresholdCents": { "type": "integer" },
+        "defaultShippingCents": { "type": "integer" },
+        "starterPriceCents": { "type": "integer" },
+        "starterCommissionRate": { "type": "number" },
+        "starterSkuLimit": { "type": "integer" },
+        "growthPriceCents": { "type": "integer" },
+        "growthCommissionRate": { "type": "number" },
+        "growthSkuLimit": { "type": "integer" },
+        "proPriceCents": { "type": "integer" },
+        "proCommissionRate": { "type": "number" },
+        "proSkuLimit": { "type": "integer" },
+        "enabledCurrencies": { "type": "array" },
+        "enabledLanguages": { "type": "array" },
+        "defaultCurrency": { "type": "string", "enum": ["INR", "USD", "EUR"] },
+        "defaultLanguage": { "type": "string", "enum": ["en", "hi", "as"] },
+        "updatedBy": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "requireProductApproval", "requireSellerApproval", "defaultGstPct", "freeShippingThresholdCents", "defaultShippingCents", "starterPriceCents", "starterCommissionRate", "starterSkuLimit", "growthPriceCents", "growthCommissionRate", "growthSkuLimit", "proPriceCents", "proCommissionRate", "proSkuLimit", "updatedBy", "updatedAt"]
+    },
+    "CouponRecord": {
+      "title": "CouponRecord",
+      "description": "Marketplace promotional discount coupon configured by platform admin.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "code": { "type": "string", "minLength": 2, "maxLength": 32 },
+        "description": { "type": "string", "maxLength": 140 },
+        "discountType": { "type": "string", "enum": ["percent", "fixed"] },
+        "discountValue": { "type": "number" },
+        "minOrderCents": { "type": "integer" },
+        "maxDiscountCents": { "type": "integer" },
+        "active": { "type": "boolean" },
+        "usageCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "code", "description", "discountType", "discountValue", "minOrderCents", "maxDiscountCents", "active", "usageCount", "createdAt", "updatedAt"]
+    },
+    "AuditLogRecord": {
+      "title": "AuditLogRecord",
+      "description": "Append-only operational and security audit log entry.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "actorUid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "actorEmail": { "type": "string", "maxLength": 200 },
+        "actorRole": { "type": "string", "enum": ["customer", "seller", "admin"] },
+        "action": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "targetType": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "targetId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "summary": { "type": "string", "minLength": 2, "maxLength": 400 },
+        "severity": { "type": "string", "enum": ["info", "warning", "critical"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "actorUid", "actorEmail", "actorRole", "action", "targetType", "targetId", "summary", "severity", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profiles containing PII; strictly readable/writable by owner or admin."
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Platform admin membership records."
+    },
+    "/sellers/{sellerId}": {
+      "schema": { "$ref": "#/entities/SellerAccount" },
+      "description": "Seller onboarding, verification, and payout settings."
+    },
+    "/stores/{storeId}": {
+      "schema": { "$ref": "#/entities/Store" },
+      "description": "Public storefronts managed by sellers."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Marketplace product catalog with moderation workflow."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders linked to customerId and sellerId."
+    },
+    "/customers/{customerRecordId}": {
+      "schema": { "$ref": "#/entities/CustomerCRM" },
+      "description": "Seller CRM records."
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/PaymentRecord" },
+      "description": "Payment gateway records."
+    },
+    "/subscriptions/{subId}": {
+      "schema": { "$ref": "#/entities/SubscriptionRecord" },
+      "description": "Seller SaaS subscription records."
+    },
+    "/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User-scoped notifications."
+    },
+    "/assets/{assetId}": {
+      "schema": { "$ref": "#/entities/AssetFile" },
+      "description": "Persistent media assets for storefronts and products."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/CategoryRecord" },
+      "description": "Marketplace product categories and GST rules."
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/ReviewRecord" },
+      "description": "Product reviews and ratings."
+    },
+    "/wishlists/{wishlistId}": {
+      "schema": { "$ref": "#/entities/WishlistItem" },
+      "description": "Customer saved wishlist products."
+    },
+    "/commissions/{commissionId}": {
+      "schema": { "$ref": "#/entities/CommissionRecord" },
+      "description": "Platform commission records per order."
+    },
+    "/payouts/{payoutId}": {
+      "schema": { "$ref": "#/entities/PayoutRecord" },
+      "description": "Seller payout requests and settlement references."
+    },
+    "/refunds/{refundId}": {
+      "schema": { "$ref": "#/entities/RefundRecord" },
+      "description": "Customer refund requests and resolutions."
+    },
+    "/disputes/{disputeId}": {
+      "schema": { "$ref": "#/entities/DisputeRecord" },
+      "description": "Customer/seller order disputes."
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/PlatformSettings" },
+      "description": "Platform-wide configuration managed by admins."
+    },
+    "/coupons/{couponId}": {
+      "schema": { "$ref": "#/entities/CouponRecord" },
+      "description": "Marketplace discount coupons managed by admins."
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLogRecord" },
+      "description": "Immutable operational audit logs readable by admins."
+    }
+  }
+}
